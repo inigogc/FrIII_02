@@ -12,11 +12,12 @@ import javax.swing.*;
  * Facultad de Ingeniería - Universidad de Deusto (2014)
  */
 public class VentanaJuego extends JFrame {
-	private static final long serialVersionUID = 1L;  // Para serialización
-	JPanel pPrincipal;         // Panel del juego (layout nulo)
-	MundoJuego miMundo;        // Mundo del juego
-	CocheJuego miCoche;        // Coche del juego
-	MiRunnable miHilo = null;  // Hilo del bucle principal de juego	
+	private static final long serialVersionUID = 1L; 		// Para serialización
+	JPanel pPrincipal;     		    						// Panel del juego (layout nulo)
+	MundoJuego miMundo;      		  						// Mundo del juego
+	CocheJuego miCoche;      	  							// Coche del juego
+	MiRunnable miHilo = null;  								// Hilo del bucle principal de juego	
+	boolean teclasControl[] = {false, false, false, false}; // Array que controla si las flechas están pulsadas {arriba, abajo, izq, dcha}
 
 	/** Constructor de la ventana de juego. Crea y devuelve la ventana inicializada
 	 * sin coches dentro
@@ -77,25 +78,48 @@ public class VentanaJuego extends JFrame {
 		// Añadido para que también se gestione por teclado con el KeyListener
 		pPrincipal.addKeyListener( new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent e) { //TODO Mejorar aceleración
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP: {
-						miCoche.acelera( +5, 1 );
+						teclasControl[0] = true;
 						break;
 					}
 					case KeyEvent.VK_DOWN: {
-						miCoche.acelera( -5, 1 );
+						teclasControl[1] = true;
 						break;
 					}
 					case KeyEvent.VK_LEFT: {
-						miCoche.gira( +10 );
+						teclasControl[2] = true;
 						break;
 					}
 					case KeyEvent.VK_RIGHT: {
-						miCoche.gira( -10 );
+						teclasControl[3] = true;
 						break;
 					}
 				}
+			}
+			
+			@Override
+			public void keyReleased( KeyEvent e) {
+				
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_UP: {
+					teclasControl[0] = false;
+					break;
+				}
+				case KeyEvent.VK_DOWN: {
+					teclasControl[1] = false;
+					break;
+				}
+				case KeyEvent.VK_LEFT: {
+					teclasControl[2] = false;
+					break;
+				}
+				case KeyEvent.VK_RIGHT: {
+					teclasControl[3] = false;
+					break;
+				}
+			}
 			}
 		});
 		pPrincipal.setFocusable(true);
@@ -159,6 +183,13 @@ public class VentanaJuego extends JFrame {
 					miMundo.rebotaHorizontal(miCoche);
 				if (miMundo.hayChoqueVertical(miCoche)) // Espejo vertical si choca en Y
 					miMundo.rebotaVertical(miCoche);
+				
+				// Modificar la velocidad o trayectoria
+				if (teclasControl[0]){	miCoche.acelera( +5, 1 );}
+				if (teclasControl[1]){	miCoche.acelera( -5, 1 );}
+				if (teclasControl[2]){	miCoche.gira( +5 );}
+				if (teclasControl[3]){	miCoche.gira( -5 );}
+				
 				// Dormir el hilo 40 milisegundos
 				try {
 					Thread.sleep( 40 );
