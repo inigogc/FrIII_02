@@ -10,6 +10,11 @@ public class Coche {
 	protected double posX;  // Posición en X (horizontal)
 	protected double posY;  // Posición en Y (vertical)
 	protected String piloto;  // Nombre de piloto
+	protected static double MASA = 1.000;
+	protected static double COEF_RZTO_AIRE = 0.35;
+	protected static double COEF_RZTO_SUELO = 15.5;
+	protected static double FUER_ADELANTE = 200;
+	protected static double FUER_ATRAS = 100;
 	
 	// Constructores
 	

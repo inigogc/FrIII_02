@@ -184,6 +184,11 @@ public class VentanaJuego extends JFrame {
 				if (miMundo.hayChoqueVertical(miCoche)) // Espejo vertical si choca en Y
 					miMundo.rebotaVertical(miCoche);
 				
+				// Calcular la fuerza actual del coche
+				if (teclasControl[0]){ miMundo.aplicarFuerza(Coche.FUER_ADELANTE, miCoche);}
+				if (teclasControl[1]){ miMundo.aplicarFuerza(Coche.FUER_ATRAS, miCoche);}
+				
+				
 				// Modificar la velocidad o trayectoria
 				if (teclasControl[0]){	miCoche.acelera( +5, 1 );}
 				if (teclasControl[1]){	miCoche.acelera( -5, 1 );}
